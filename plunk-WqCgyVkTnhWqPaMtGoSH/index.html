@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <title>Shopping List Version 4.0</title>
+    <script src="script.js"></script>
+    
+    <script>
+     function formatDate() 
+     {
+        var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+        document.getElementById("date").innerHTML=[month, day, year ].join('/');
+      }
+      
+    </script>
+  </head>
+
+  <body onload="formatDate()">
+    <h1 align="center">Shopping List App Version 4.0</h1>
+    <h4 align="center" id="date"></h4>
+    <!--<form action="/action_page.php" method="get" target="_self">
+       Enter name: <input type="text" name="fname">
+      <input type="submit" value="Submit">
+    </form>-->
+    <p align=center  style="background-color: Navy;padding: 30px;color: White">
+        Name: <input type="text" id="item" name="item" /><br><br>
+         Cost: &nbsp;&nbsp;<input type="text" id="cost" name="cost" /><br><br>
+        <input class="button" name="submit" type="button" value="Add Item" onclick="addShoppinglist(item.value, cost.value)" />
+    </p>
+    <p class="List"  id="MyList"></p>
+     <p class="Cart" id="MyCart"></p>
+  </body>
+</html>

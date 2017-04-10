@@ -1,0 +1,40 @@
+/* Styles go here */
+p.List
+{
+    text-align: center; 
+    background-color: green;
+    padding: 10px;
+    color: black;
+    font-family: verdana;
+    font-size: 12px;
+}
+
+p.Cart
+{
+    text-align:center;
+    background-color: yellow;
+    padding: 10px;
+    color: black;
+    font-family: verdana;
+    font-size: 12px;
+}
+
+th, td {
+    padding: 7px;
+    text-align: left;
+}
+
+table#t01 th {
+    background-color: black;
+    color: white;
+}
+
+td.main
+{
+  text-align: right;
+}
+
+td.submit
+{
+  text-align: center;
+}
