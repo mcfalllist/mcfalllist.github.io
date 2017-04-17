@@ -20,7 +20,7 @@ var shoppinglist = [];
 var addtocart = [];
 
 var MyItems = {
-  name:"";
+  name:""
 };
 
 
