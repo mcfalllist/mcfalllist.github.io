@@ -2,9 +2,9 @@
 // Dennis McFall
 // Spring 2017
 // Web233 Javascript
-// Date: 4/9/2017
-// Assignment #12
-//Shopping List Version 4.0
+// Date: 4/16/2017
+// Assignment #13
+//Shopping List Version 4.2
 
 /*
 It should have ability to create new cookie file from shoppinglist array
@@ -20,8 +20,7 @@ var shoppinglist = [];
 var addtocart = [];
 
 var MyItems = {
-  name:"",
-  price:""
+  name:"";
 };
 
 
@@ -63,8 +62,6 @@ function addShoppinglist(item,cost) {
   var count=0;
   //v 3.0 edit value for MyItems.name
   MyItems.name=item;
-  //v 3.0 edit value for MyItems.cost
-  MyItems.price=cost;
   //v 3.0 for loop through object propterties and 
   for (var x in MyItems){
     if (count===1){
@@ -99,8 +96,7 @@ function changeShoppinglist(position) {
    var e2 = arrays[1];
  var ReplacedAmount = e2.replace(/\$/g,'');
   var eitem = prompt("Please enter new item", e1);
-  var ecost = prompt("Please enter your name", ReplacedAmount);
-  shoppinglist[position] = eitem + "," + '$' + ecost;
+  shoppinglist[position] = eitem;
   displayShoppinglists();
   
   //v 4.0 save cookie
@@ -201,8 +197,6 @@ function clearFocus()
     //v 2.1: clear inputbox value out by id
     //v 2.1: http://stackoverflow.com/questions/4135818/how-to-clear-a-textbox-using-javascript 
     document.getElementById("item").value = "";
-    //v 2.1: set focus on inputbox after text is cleared
-    document.getElementById("cost").value = "";
     //v 2.1: http://stackoverflow.com/questions/17500704/javascript-set-focus-to-html-form-element 
     document.getElementById("item").focus();
 }
