@@ -54,7 +54,7 @@ function populateshoppinglistonload()
 
 
 //v 3.0 Update function addShoppinglist by adding objects
-function addShoppinglist(item,cost) {
+function addShoppinglist(item) {
   
   //v 3.0 declare variable for groc string
   var groc="";
