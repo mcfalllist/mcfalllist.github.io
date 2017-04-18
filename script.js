@@ -149,7 +149,7 @@ var btndelete =  ' <input class="button" name="delete" type="button" value="Remo
 var arrays = shoppinglist[i];
 arrays = "'"+arrays+"'";
 var btnaddcart =  ' <input class="checkbox" name="add" type="checkbox" value="Add to Purchased List" onclick="addtoshopcart('+arrays+','+ i +')" />';
-TheList = TheList + shoppinglist[i] + btndelete + ' ' + btnaddcart + '<br>';
+TheList = btnaddcart + ' ' + TheList + shoppinglist[i] + btndelete + '<br>';
 }
 document.getElementById("MyList").innerHTML = '<h4>Shopping List</h4>' + '<br>' + TheList;
 }
