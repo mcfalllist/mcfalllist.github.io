@@ -145,7 +145,7 @@ function displayShoppinglists() {
 var TheList = "";
 var arrayLength = shoppinglist.length;
 for (var i = 0; i < arrayLength; i++) {
-var btndelete =  ' <input class="button" name="delete" type="button" value="Remove Item" onclick="deleteShoppinglists(' + i + ')" />';
+var btndelete =  ' <input class="button" name="delete" type="button" value="Remove" onclick="deleteShoppinglists(' + i + ')" />';
 var arrays = shoppinglist[i];
 arrays = "'"+arrays+"'";
 var btnaddcart =  ' <input class="checkbox" name="add" type="checkbox" value="Add to Purchased List" onclick="addtoshopcart('+arrays+','+ i +')" />';
@@ -162,7 +162,7 @@ var btndelete =  ' <input class="button" name="delete" type="button" value="Remo
 var arrays = addtocart[i];
 arrays = "'"+arrays+"'";
  var btnaddlist =  ' <input class="checkbox" name="add" type="checkbox" checked value="Add to Shopping List" onclick="addbacktoshoppinglist('+arrays+',' + i + ')" />';
-TheList = TheList + addtocart[i] + btndelete + ' ' + btnaddlist + '<br>';
+TheList = btnaddlist + ' ' + TheList + addtocart[i] + btndelete + '<br>';
 }
 document.getElementById("MyCart").innerHTML = '<h4>Shopping Cart</h4>' + '<br>' + TheList;
 }
