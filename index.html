@@ -4,6 +4,16 @@
   <head>
     <link rel="stylesheet" href="style.css">
     <title>Shopping List</title>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <script src="script.js"></script>
     
     <script>
@@ -22,13 +32,10 @@
   <body onload="formatDate()">
     <h1 align="center">Shopping List App</h1>
     <h4 align="center" id="date"></h4>
-    <!--<form action="/action_page.php" method="get" target="_self">
-       Enter name: <input type="text" name="fname">
-      <input type="submit" value="Submit">
-    </form>-->
     <p align=center  style="background-color: Navy;padding: 30px;color: White">
-        Name: <input type="text" id="item" name="item" /><br><br>
-        <input class="button" name="submit" type="button" value="Add Item" onclick="addShoppinglist(item.value)" />
+        Name: <input type="text" id="item" name="item" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('submit').click()" /><br><br>
+        <input class="button" id="submit" name="submit" type="button" value="Add Item" onclick="addShoppinglist(item.value)" />
     </p>
     <p class="List"  id="MyList"></p>
      <p class="Cart" id="MyCart"></p>
