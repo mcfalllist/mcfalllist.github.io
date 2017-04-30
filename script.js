@@ -2,20 +2,19 @@
 // Dennis McFall
 // Spring 2017
 // Web233 Javascript
-// Date: 4/19/2017
-// Assignment #13
-//Shopping List application
+// Date: 4/30/2017
+// Assignment #15
+//Non Profit Organization Donor List
 
 /*
-1) Remove Cost Field
-
-2) Remove "Add" text next to checkbox
-
-3) Remove Version ?? from home page.
-
-4) Add ability to submit new item when [enter] key pressed
-
-5) Add popup describing app when visitors load webpage the first time
+Add ability to convert shared URL to a bitly link
+Work on CSS
+Work on webpage content (photos, descriptions, title tag, etc.)
+Make web app yours! 
+Make list different than shopping list (examples: idea list, book list, movie list, etc.)
+Change title to fit that list
+Update "about" description of app!
+Submit bitly link below using pre-populated list showing how list could be used
 */
 
 
@@ -23,7 +22,8 @@ var shoppinglist = [];
 var addtocart = [];
 
 var MyItems = {
-  name:""
+  name:"",
+  price:""
 };
 
 
@@ -31,8 +31,55 @@ function showAppDescription()
 {
   var message = "";
   
-  message = "Shopping List Phone Application\n\n";
-  message += " This convenient app was created during my javascript class - Spring 2017"
+  message = "Non Profit Organization Donor List\n";
+  message += " This convenient app was created during my javascript class - Spring 2017";
+  alert(message);
+}
+
+//v4.1 ShareList via bitly api
+function passlist()
+{
+   var getshorturl=0;
+   var login = "mcfalldm02";
+   var api_key = "R_f6a9516f492a46ca9d6fa7484b68f66a";
+   var long_url = "https://mcfalllist.github.io/index.html?list="+ shoppinglist;
+    try{
+            $.getJSON(
+             "https://api-ssl.bitly.com/v3/shorten?callback=?",
+              {
+                  "format": "json",
+                  "apiKey": api_key,
+                  "login": login,
+                  "longUrl": long_url
+              },
+             function(response)
+             {
+                getshorturl = 1;
+                document.getElementById("sharelist").innerHTML = 'Share List:\n' + response.data.url;
+                copyToClipboard(response.data.url);
+                // copyToClipboard('sharelist');
+                 //alert("ShoppingList URL Copied");
+             });
+        } 
+        catch(err) 
+        {
+            //alert("Error : "+ err);
+            document.getElementById("sharelist").innerHTML = 'Share List:\n' + long_url;
+            //copyToClipboard("sharelist");
+            copyToClipboard(long_url);
+            //alert("ShoppingList URL Copied");
+        }
+}
+
+//v4.1 share function
+function share()
+{
+   passlist();
+}
+
+//v4.1 prompt message to copy URL
+function copyToClipboard(text) {
+   window.prompt("Copy & Share List!", text);
 }
 
 
@@ -40,14 +87,24 @@ function showAppDescription()
 //v 4.0 save cookie
 //v 4.0 read cookie on load and display
 window.onload = function() {
-    alert("Welcome to the 'Shopping List' App");
+    alert("Welcome to the 'Donor List' App");
     populateshoppinglistonload();
     displayShoppinglists();
     clearFocus();
 }
 
-//In .JS file
-//v 4.0 populateshoppinglistonload()
+function get(name){
+    var url = window.location.search;
+    var num = url.search(name);
+    var namel = name.length;
+    var frontlength = namel+num+1; 
+    var front = url.substring(0, frontlength);
+    url = url.replace(front, "");
+    num = url.search("&");
+    if(num>=0) return url.substr(0,num);
+    if(num<0)  return url;
+}
+
 function populateshoppinglistonload()
 {
   shoppinglist = [];
@@ -56,35 +113,38 @@ function populateshoppinglistonload()
   var y = readCookie('mcfalllist');
   //remove unwanted chars and format
   y = remove_unwanted(y); 
+  //spit array by comma %2C
+  
+  var geturllistvalue = get("list");
+    if (geturllistvalue) {
+        geturllistvalue = remove_unwanted(geturllistvalue);
+      geturllistvalue = geturllistvalue.split(',');
+      shoppinglist = geturllistvalue;
+  }else if (y){
+       y = y.split('%2C');
+      shoppinglist = y;
+  }
 }
+
 
 
 
 //v 3.0 Update function addShoppinglist by adding objects
 function addShoppinglist(item) {
-  //debugger;
-  //v 3.0 declare variable for groc string
-  var groc="";
-  //v 3.0 v 3.0 declare variable for loop count
-  var count=0;
-  //v 3.0 edit value for MyItems.name
-  MyItems.name=item;
 
-  //v 3.0 for loop through object propterties and 
-  for (var x in MyItems){
-    //add to groc string from object array item
-    groc += MyItems[x];
-    //increment count by 1
-   count++;
+  if (item != "")
+  {
+    document.getElementById("sharelist").innerHTML = ' ';
+    shoppinglist.push(item);
+    displayShoppinglists();
+    displayShoppingCart(); 
+    clearFocus();
+    savecookie();
+  }else
+  {
+      alert("Donor Name Required: Please enter now :)");
+      clearFocus();
   }
-  
-  //push to shoppinglist
-  shoppinglist.push(groc);
-  
-  //display shoppinglist
-  displayShoppinglists();
-  
-   clearFocus();
 }
 
 
@@ -118,41 +178,55 @@ function addbacktoshoppinglist(item,num) {
 
 //v 3.1 Update function addShoppinglist by adding objects
 function addtoshopcart(item, num) {
-  //debugger;
+    document.getElementById("sharelist").innerHTML = ' ';
     deleteShoppinglists(num);
     addtocart.push(item);
     
-  //display shoppinglist
-  displayShoppinglists();
+    displayShoppinglists();
+    displayShoppingCart(); 
+    clearFocus();
 
-//v3.1 display displayShoppingCart() 
-  displayShoppingCart();
-
-  //Clear
-  clearFocus();
+   savecookie();
 }
 
-
 function displayShoppinglists() {
-  //debugger;
-  var TheList = "";
-  var arrayLength = shoppinglist.length;
-  for (var i = 0; i < arrayLength; i++) {
-    var arrays = shoppinglist[i];
-    arrays = "'"+arrays+"'";
-    var btnaddcart =  ' <input class="checkbox" name="add" type="checkbox" value="Add to Purchased List" onclick="addtoshopcart('+arrays+','+ i +')" />';
-    var btndelete =  ' <input class="button" name="delete" type="button" value="Remove" onclick="deleteShoppinglists(' + i + ')" />';
+    document.getElementById("MyList").innerHTML = '';
+    var tableStart = "<table class='tableList'>";
+    var tableStop = "</table>";
+    var TheList = "";
+    var TheRow = "";
+    var arrayLength = shoppinglist.length;
+    for (var i = 0; i < shoppinglist.length; i++) {
+          //v 3.1 change button name to btndelete
+        var btndelete =  ' <input class="button" id="remove" name="delete" type="button" value="Remove" onclick="deleteShoppinglists(' + i + ')" />';
+        var arrays = shoppinglist[i];
+        arrays = "'"+arrays+"'";
+        var btnaddcart =  '<input name="add" type="checkbox" id="adds" value="Add to Shopping Cart" onclick="addtoshopcart('+arrays+','+ i +')" />';
+        var btnsharelist = '<input class="button" id="sharebutton" name="shares" type="submit" value="Share List" onclick="share()" />';
+        
+        TheList = TheList + '<tr class="row"><td class="item">' + btnaddcart + '</td><td class="item">' + shoppinglist[i] + '</td><td class="item">' + btndelete + '</td></tr>';
+    }
+    
+    TheList = tableStart + TheList + tableStop;
 
-    TheList = TheList + btnaddcart + ' ' + shoppinglist[i] + btndelete + '<br>';
+  if (arrayLength > 0)
+  {
+    document.getElementById("MyList").innerHTML = '<h4>Qualified Donors</h4>' + TheList;
+    document.getElementById("sharebutton").innerHTML = btnsharelist;
+  }else
+  {
+    document.getElementById("MyList").innerHTML = ' ';
+    document.getElementById("sharebutton").innerHTML = ' ';
+    document.getElementById("sharelist").innerHTML = ' ';
   }
-
-  document.getElementById("MyList").innerHTML = '<h4>Shopping List</h4>' + '<br>' + TheList;
-
+  
 }
 
 function displayShoppingCart() {
   //debugger;
   var TheList = "";
+    var tableStart = "<table class='tableCart'>";
+    var tableStop = "</table>";
   var arrayLength = addtocart.length;
   for (var i = 0; i < arrayLength; i++) { 
     var arrays = addtocart[i];
@@ -160,17 +234,18 @@ function displayShoppingCart() {
     var btnaddlist =  ' <input class="checkbox" name="add" type="checkbox" checked value="Add to Shopping List" onclick="addbacktoshoppinglist('+arrays+',' + i + ')" />';
     var btndelete =  ' <input class="button" name="delete" type="button" value="Remove" onclick="deleteShoppingCart(' + i + ')" />';
    
-    TheList = TheList + btnaddlist + ' ' + addtocart[i] + btndelete + '<br>';
+    TheList = TheList + '<tr class="row"><td class="item">' + btnaddlist + '</td><td class="item">' + addtocart[i] + '</td><td class="item">' +  btndelete +  '</td></tr>';
   }
+  
+  TheList = tableStart + TheList + tableStop;
 
-document.getElementById("MyCart").innerHTML = '<h4>Shopping Cart</h4>' + '<br>' + TheList;
+document.getElementById("MyCart").innerHTML = '<h4>Disqualified Donors</h4>' + TheList;
 
 }
 
 function deleteShoppinglists(position) {
   shoppinglist.splice(position, 1);
   displayShoppinglists();
-  
   displayShoppingCart();
 }
 
@@ -178,8 +253,6 @@ function deleteShoppinglists(position) {
 function deleteShoppingCart(position) {
   addtocart.splice(position, 1);
   displayShoppinglists();
-
-
   displayShoppingCart();
 
 }
@@ -188,10 +261,7 @@ function deleteShoppingCart(position) {
  //v 2.1 add function 'clearFocus'
 function clearFocus()
 {
-    //v 2.1: clear inputbox value out by id
-    //v 2.1: http://stackoverflow.com/questions/4135818/how-to-clear-a-textbox-using-javascript 
     document.getElementById("item").value = "";
-    //v 2.1: http://stackoverflow.com/questions/17500704/javascript-set-focus-to-html-form-element 
     document.getElementById("item").focus();
 }
 
@@ -199,17 +269,13 @@ function clearFocus()
 //v 4.0 save cookie
 function savecookie()
 {
-  delete_cookie('mcfalllist');
    var date = new Date();
    //keeps for a year
     date.setTime(date.getTime() + Number(365) * 3600 * 1000);
    document.cookie = 'mcfalllist' + "=" + escape(shoppinglist.join(',')) + "; path=/;expires = " + date.toGMTString();
 }
 
-//In .JS file
-//v 4.0 read cookie and return
 function readCookie(name) {
-debugger;
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
@@ -221,7 +287,6 @@ debugger;
 }
 
 //In .JS file
-//v 4.0 delete cookie
 function delete_cookie(name) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
